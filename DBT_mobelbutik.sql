@@ -13,14 +13,12 @@ postal_code varchar(20) not null,
 city varchar(50) not null,
 telephone int (20) not null
 );
- 
-insert into furnitureStore.customerInfo
+alter table customerInfo
+add salt varchar (50); 
+insert into customerInfo
 values
-(012, AES_ENCRYPT ('David','passw'), AES_ENCRYPT ('Johnson','passw'),'davidj@mail.com','gatan 23','12345','Örebro',0123456789),
-(013, AES_ENCRYPT ('John','passw'), AES_ENCRYPT ('Davidson','passw'),'johnd@mail.com','vägen 8','23456','Stockholm',0125436789);
-
-alter table costumerInfo
-add salt varchar (50);
+(012, AES_ENCRYPT (concat ('David','salt'),'key'), AES_ENCRYPT (concat ('Johnson','salt'), 'key'),'davidj@mail.com','gatan 23','12345','Örebro',0123456789,'salt'),
+(013, AES_ENCRYPT (concat ('John','salt'), 'key'), AES_ENCRYPT (concat ('Davidson','salt'),'key'),'johnd@mail.com','vägen 8','23456','Stockholm',0125436789,'salt');
 
 
 create table employees(
@@ -36,15 +34,22 @@ add salt varchar (50);
 
 insert into furnitureStore.employees
 values
-(1234, AES_ENCRYPT ('Martin','passw'), AES_ENCRYPT ('Charlemaine','passw'),'Vägen 4','mail@mail.se', AES_ENCRYPT (20000,'passw')),
-(1235, AES_ENCRYPT ('Emily','passw'), AES_ENCRYPT ('Arnelid','passw'),'Vägen 5','emilyar@mail.se', AES_ENCRYPT (20001,'passw')),
-(1236, AES_ENCRYPT ('Bill','passw'), AES_ENCRYPT ('Palmstedt','passw'),'Gatan 74','f@mail.se', AES_ENCRYPT (8,'passw'));
+(1234, AES_ENCRYPT (concat ('Martin','salt'),'key'), AES_ENCRYPT (concat ('Charlemaine','salt'),'key'),'Vägen 4','mail@mail.se',20000,'salt'),
+(1235, AES_ENCRYPT (concat ('Emily','salt'),'key'), AES_ENCRYPT (concat ('Arnelid','salt'),'key'),'Vägen 5','emilyar@mail.se',20001,'salt'),
+(1236, AES_ENCRYPT (concat ('Bill','salt'),'key'), AES_ENCRYPT (concat ('Palmstedt','salt'),'key'),'Gatan 74','f@mail.se',8,'salt');
+
+SELECT cast(AES_DECRYPT (first_name,'key') AS char (50)), cast(aes_decrypt (last_name,'key') AS char (50)) FROM employees;
 
 create table orders(
 order_id int(10) not null primary key auto_increment,
-order_date date not null,
-quantity int (10) not null
+order_date date not null
 );
+
+create table orderitems(
+quantity int (10) not null,
+totalSum decimal (10) not null
+);
+
 
 create table products(
 product_id int (10) not null primary key auto_increment,
