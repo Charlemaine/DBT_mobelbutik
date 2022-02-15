@@ -29,7 +29,6 @@ adress varchar (100) not null,
 mail varchar (100) not null,
 salary binary (65)
 );
-
 alter table  employees
 add salt varchar (50);
 
@@ -39,26 +38,18 @@ values
 (1235, AES_ENCRYPT (concat ('Emily','salt'),'key'), AES_ENCRYPT (concat ('Arnelid','salt'),'key'),'Vägen 5','emilyar@mail.se',20001,'salt'),
 (1236, AES_ENCRYPT (concat ('Bill','salt'),'key'), AES_ENCRYPT (concat ('Palmstedt','salt'),'key'),'Gatan 74','f@mail.se',8,'salt');
 
--- SELECT cast(AES_DECRYPT (first_name,'key') AS char (50)), cast(aes_decrypt (last_name,'key') AS char (50)) FROM employees;
+SELECT cast(AES_DECRYPT (first_name,'key') AS char (50)), cast(aes_decrypt (last_name,'key') AS char (50)) FROM employees;
 
 create table orders(
 order_id int(10) not null primary key auto_increment,
-order_date date not null,
-total_sum decimal not null
+order_date date not null
 );
 
-insert into orders values
-(1234,'2022-02-15',30000);
-
-create table orderdetails(
-product_id int(10) not null,
-order_id int(10) not null,
+create table orderitems(
 quantity int (10) not null,
-total_sum decimal (10) not null,
-primary key (order_id),
-foreign key (product_id) references products(product_id),
-foreign key (order_id) references orders(order_id)
+totalSum decimal (10) not null
 );
+
 
 create table products(
 product_id int (10) not null primary key auto_increment,
@@ -67,7 +58,7 @@ stock_status int (10) not null,
 cost int (10) not null
 );
 
-insert into products
+insert into furnitureStore.products
 values
 (112,'Table',30,4000),
 (113,'Chair',50,1700),
@@ -82,23 +73,12 @@ supplier_name varchar (50) not null,
 telephone int (20) not null,
 mail varchar (100) not null
 );
-
-insert into suppliers
+insert into furnitureStore.suppliers
 values
 (11,'Happy beds',0123456789,'hb1@happybeds.com'),
 (12,'Sad tables',0135792468,'st1@sadtables.se');
 
-
 create table transactions(
-transaction_id int (10) not null primary key auto_increment,
+transaction_id int (10) not null primary key,
 transaction_date date 
 );
-
-
-
-begin transaction stockstatus
-INSERT INTO orderdetails. VALUES(products.)
-UPDATE products SET stock_status - 1 where 
-FROM products WHERE 
-COMMIT TRANSACTION;
-
