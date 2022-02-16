@@ -45,7 +45,8 @@ order_id int(10) not null primary key auto_increment,
 order_date date not null
 );
 
-create table orderitems(
+create table orderdetails(
+
 quantity int (10) not null,
 totalSum decimal (10) not null
 );
