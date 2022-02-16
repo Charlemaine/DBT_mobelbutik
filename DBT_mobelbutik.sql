@@ -43,6 +43,7 @@ SELECT cast(AES_DECRYPT (first_name,'key') AS char (50)), cast(aes_decrypt (last
 create table orders(
 order_id int(10) not null primary key auto_increment,
 order_date date not null,
+customer_id int (10),
 total_sum decimal (10)
 );
 
@@ -50,7 +51,7 @@ create table orderdetails(
 order_id int (10) not null,
 product_id  int (10) not null,
 quantity int (10) not null,
-total_sum decimal (10) not null
+unit_sum decimal (10)
 );
 
 
